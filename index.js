@@ -1,9 +1,11 @@
-const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 (async () => {
   const browser = await puppeteer.launch({
-    headless: true, // Ensure headless mode
-    args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add any necessary args for the environment
+    args: chromium.args,
+    executablePath: await chromium.executablePath,
+    headless: true,
   });
   const page = await browser.newPage();
 
@@ -26,7 +28,7 @@ const puppeteer = require('puppeteer');
   
       return rewards;
     });
-  
+
     console.log('Rewards won so far:', rewardsValue);
   } catch (error) {
     console.error('Error occurred:', error);
